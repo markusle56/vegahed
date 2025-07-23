@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FFF6EA;
+  --foreground: #7C0A02;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: black;
+    --foreground: #FFF6EA;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Maven Pro, Rowdies;
+}
