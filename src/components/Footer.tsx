@@ -9,11 +9,11 @@ export default function Footer() {
         <h1 className="text-2xl">Contact Me</h1>
         <br />
         <div className="flex gap-4">
-          <FontAwesomeIcon icon={faInbox} size="2xs" style={{ color: "#ffffff" }} className="max-h-5 max-w-5" />
+          <FontAwesomeIcon icon={faInbox} size="2xs" style={{ color: "#ffffff" }} className="max-h-5 max-w-5"/>
           <a href="mailto:anhkhoa.wm@gmail.com" className="hover:underline">Email</a>
         </div>
         <div className="flex gap-4">
-          <FontAwesomeIcon icon={faLinkedin} style={{ color: "#ffffff" }} className="max-h-5 max-w-5" />
+          <FontAwesomeIcon icon={faLinkedin} style={{ color: "#ffffff" }} className="max-h-5 max-w-5" size="2xs" />
           <a href="https://www.linkedin.com/in/markus-le-581b55245/" target="_blank" rel="noopener noreferrer" className="hover:underline">Linkedin</a>
         </div>
         <div className="flex gap-4">

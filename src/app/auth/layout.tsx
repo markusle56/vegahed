@@ -22,11 +22,11 @@ export default function Auth({
       <body
         className={`${rowdies.className} antialiased`}
       >
-        <div className="relative w-full h-screen bg-[#FFF4E8] overflow-hidden flex justify-end">
-          <div className="absolute top-0 pt-0.5 left-0 z-10 w-1/2 h-full">
-            <img src="/auth.svg" alt="illustration" className="object-cover h-full w-full" />
+        <div className="relative w-full h-auto min-h-screen bg-[#FFF4E8] overflow-auto flex justify-end">
+          <div className="absolute top-0 pt-0.5 left-0 z-10 w-1/2 h-full flex items-end">
+            <img src="/auth.svg" alt="illustration" className="max-w-1/2-screen" />
           </div>
-          <main className="flex flex-col justify-center pl-60 items-center h-full pr-12 bg-white rounded-tl-full rounded-bl-full w-2/3 shadow ">
+          <main className="flex flex-col justify-center pl-60 items-center h-full min-h-screen py-10 pr-12 bg-white rounded-tl-full rounded-bl-full w-2/3 shadow ">
               {children}
           </main>
         </div>

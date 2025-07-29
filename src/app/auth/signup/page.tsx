@@ -1,106 +1,139 @@
-import Image from "next/image";
+'use client';
 
+import AuthO from "@/components/AuthO"; 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation'
 
+function validatePassword(password : string) {
+  const errors: string[] = [];
+
+  // minimum length
+  if (password.length < 8) {
+    errors.push("Must be at least 8 characters long");
+  }
+  // uppercase letter
+  if (! /[A-Z]/.test(password) ) {
+    errors.push("Must include at least one uppercase letter");
+  }
+  // lowercase letter
+  if (! /[a-z]/.test(password) ) {
+    errors.push("Must include at least one lowercase letter");
+  }
+  // digit
+  if (! /\d/.test(password) ) {
+    errors.push("Must include at least one number");
+  }
+  // special character
+  if (! /[!@#$%^&*(),.?":{}|<>]/.test(password) ) {
+    errors.push("Must include at least one special character");
+  }
+
+  return errors;
+}
 export default function Home() {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const router = useRouter()
+
+  const passwordsMatch = password === confirmPassword;
+  
+  async function handleSignup(e: React.FormEvent) {
+    e.preventDefault();
+    if (!passwordsMatch && validatePassword(password).length) {
+      return; 
+    }
+    const res = await fetch('/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, name, password }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert('Signup successful!');
+      router.push('/auth/login')
+    } else {
+      alert(data.error || 'Signup failed.');
+    }
+  }
+
   return (
     <>
-      <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-        <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-          <Image
-            className="dark:invert"
-            src="/next.svg"
-            alt="Next.js logo"
-            width={180}
-            height={38}
-            priority
-          />
-          <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-            <li className="mb-2 tracking-[-.01em]">
-              Get started by editing{" "}
-              <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-                src/app/page.tsx
-              </code>
-              .
-            </li>
-            <li className="tracking-[-.01em]">
-              Save and see your changes instantly.
-            </li>
-          </ol>
-
-          <div className="flex gap-4 items-center flex-col sm:flex-row">
-            <a
-              className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                className="dark:invert"
-                src="/vercel.svg"
-                alt="Vercel logomark"
-                width={20}
-                height={20}
-              />
-              Deploy now
-            </a>
-            <a
-              className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-              href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Read our docs
-            </a>
-          </div>
-        </main>
-        <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-          <a
-            className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              aria-hidden
-              src="/file.svg"
-              alt="File icon"
-              width={16}
-              height={16}
-            />
-            Learn
-          </a>
-          <a
-            className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              aria-hidden
-              src="/window.svg"
-              alt="Window icon"
-              width={16}
-              height={16}
-            />
-            Examples
-          </a>
-          <a
-            className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-            href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              aria-hidden
-              src="/globe.svg"
-              alt="Globe icon"
-              width={16}
-              height={16}
-            />
-            Go to nextjs.org →
-          </a>
-        </footer>
-      </div>
+      <h1 className="text-4xl">Create Account</h1>
+      <AuthO />
+      <hr className="my-6 border-t-[2px] opacity-50 border-[#7C0A02] w-1/2" />
+      <form className="flex flex-col gap-1 justify-start w-1/2" onSubmit={handleSignup}>
+        <label>
+          Email
+        </label>
+        <input
+          placeholder="Enter your email" 
+          className="h-10 px-3 rounded-2xl focus:outline-none border-[#7C0A02] ring"
+          type="email"
+          value={email} 
+          onChange={e => setEmail(e.target.value)}
+          required
+        ></input>
+        <br></br>
+        <label>
+          Name
+        </label>
+        <input
+          placeholder="Enter your name" 
+          className="h-10 px-3 rounded-2xl focus:outline-none border-[#7C0A02] ring"
+          type="text"
+          value={name} 
+          onChange={e => setName(e.target.value)}
+          required
+        ></input>
+        <br></br>
+        <label>
+          Password
+        </label>
+        <input 
+          placeholder="Enter your password" 
+          className="h-10 rounded-2xl focus:outline-none border-[#7C0A02] ring px-3"
+          type="password"
+          value={password} 
+          onChange={e => setPassword(e.target.value)}
+          required
+        ></input>
+        {password && validatePassword(password).length > 0 && (
+          <>
+            <p className="text-red-500 text-xs mt-2">Password must contain: </p>
+            <ul className="space-y-1 text-xs ps-2">
+            {validatePassword(password).map((instruction, i) => {
+                return (
+                  <li key={i} className={'text-red-500'}>
+                    {instruction}
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+          )}
+        
+        <br></br>
+        <label>
+          Confirm Password
+        </label>
+        <input 
+          placeholder="Re-enter your password" 
+          className="h-10 rounded-2xl focus:outline-none border-[#7C0A02] ring px-3"
+          type="password"
+          value={confirmPassword} 
+          onChange={e => setConfirmPassword(e.target.value)}
+          required
+        ></input>
+        {confirmPassword && !passwordsMatch && (
+        <p className="text-red-500 text-sm mt-1">Passwords do not match.</p>
+      )}
+        <br></br>
+        <button className="bg-[#7C0A02] text-white rounded-2xl h-10 hover:bg-white hover:border-[#7C0A02] hover:border-1 hover:text-[#7C0A02]">Sign Up</button>
+      </form>
     </>
   );
 }
