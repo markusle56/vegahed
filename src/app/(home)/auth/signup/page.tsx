@@ -2,7 +2,8 @@
 
 import AuthO from "@/components/AuthO"; 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import { preventLogedinUser } from "@/lib/utils";
 
 function validatePassword(password : string) {
   const errors: string[] = [];
@@ -31,6 +32,7 @@ function validatePassword(password : string) {
   return errors;
 }
 export default function Home() {
+  preventLogedinUser();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -62,11 +64,11 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="text-4xl">Create Account</h1>
+      <h1 className="text-4xl font-rowdies">Create Account</h1>
       <AuthO />
       <hr className="my-6 border-t-[2px] opacity-50 border-[#7C0A02] w-1/2" />
-      <form className="flex flex-col gap-1 justify-start w-1/2" onSubmit={handleSignup}>
-        <label>
+      <form className="flex flex-col gap-1 justify-start w-1/2 font-maven" onSubmit={handleSignup}>
+        <label className="font-bold mx-3">
           Email
         </label>
         <input
@@ -78,7 +80,7 @@ export default function Home() {
           required
         ></input>
         <br></br>
-        <label>
+        <label className="font-bold mx-3">
           Name
         </label>
         <input
@@ -90,7 +92,7 @@ export default function Home() {
           required
         ></input>
         <br></br>
-        <label>
+        <label className="font-bold mx-3">
           Password
         </label>
         <input 
@@ -117,7 +119,7 @@ export default function Home() {
           )}
         
         <br></br>
-        <label>
+        <label className="font-bold mx-3">
           Confirm Password
         </label>
         <input 
@@ -132,7 +134,7 @@ export default function Home() {
         <p className="text-red-500 text-sm mt-1">Passwords do not match.</p>
       )}
         <br></br>
-        <button className="bg-[#7C0A02] text-white rounded-2xl h-10 hover:bg-white hover:border-[#7C0A02] hover:border-1 hover:text-[#7C0A02]">Sign Up</button>
+        <button className="bg-[#7C0A02] text-white rounded-2xl h-10 hover:bg-white hover:border-[#7C0A02] hover:border-1 hover:text-[#7C0A02] font-rowdies">Sign Up</button>
       </form>
     </>
   );

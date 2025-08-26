@@ -4,30 +4,23 @@ import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 export default function Footer() {
   return (
-    <footer className="h-48 bg-[#7C0A02] py-6 px-24 text-white flex items-start gap-x-20">
-      <div className="gap-y-2.5">
-        <h1 className="text-2xl">Contact Me</h1>
-        <br />
-        <div className="flex gap-4">
-          <FontAwesomeIcon icon={faInbox} size="2xs" style={{ color: "#ffffff" }} className="max-h-5 max-w-5"/>
-          <a href="mailto:anhkhoa.wm@gmail.com" className="hover:underline">Email</a>
+    <div className="mx-20 px-10">
+      <hr className="w-full rounded-2xl border-b-darkred border-b-2 opacity-50 dark:border-b-white"></hr>
+      <footer className="h-48 py-6 px-5 text-darkred flex items-start gap-x-20 dark:text-white">
+        <div className="gap-y-2.5">
+          <h1 className="text-2xl font-rowdies">Contact Me</h1>
+          <br />
+          
         </div>
-        <div className="flex gap-4">
-          <FontAwesomeIcon icon={faLinkedin} style={{ color: "#ffffff" }} className="max-h-5 max-w-5" size="2xs" />
-          <a href="https://www.linkedin.com/in/markus-le-581b55245/" target="_blank" rel="noopener noreferrer" className="hover:underline">Linkedin</a>
+        <div className="gap-y-2.5">
+          <h1 className="text-2xl font-rowdies">View my code</h1>
+          <br />
+          <a href="" className="hover:underline">Source code</a>
+          <br />
+          <a href="/" className="hover:underline">Report an error</a>
         </div>
-        <div className="flex gap-4">
-          <FontAwesomeIcon icon={faCode} style={{ color: "#ffffff" }} className="max-h-5 max-w-5" />
-          <a href="https://markusle56.github.io" target="_blank" rel="noopener noreferrer" className="hover:underline">Website</a>
-        </div>
-      </div>
-      <div className="gap-y-2.5">
-        <h1 className="text-2xl">Open Source</h1>
-        <br />
-        <a href="" className="hover:underline">Source code</a>
-        <br />
-        <a href="/" className="hover:underline">Report an error</a>
-      </div>
-    </footer>
+      </footer>
+    </div>
+    
   );
 }

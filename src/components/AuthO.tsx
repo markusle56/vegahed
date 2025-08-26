@@ -14,7 +14,7 @@ export default function AuthO() {
     }
     return (
         <div className="h-auto flex mt-5 gap-x-6">
-            <FontAwesomeIcon icon={faGooglePlusG} style={{color: "#7c0a02",}} className="h-10" size="2x" onClick={() => SignIn("google")}/>
+            <FontAwesomeIcon icon={faGooglePlusG} style={{color: "#7c0a02",}} className="h-10 hover:scale-105" size="2x" onClick={() => SignIn("google")}/>
             <a href="https://www.google.com/" className="hover:scale-105" >
                 <FontAwesomeIcon icon={faFacebook} style={{color: "#7c0a02",}} className="h-10" size="2x"/>
             </a>

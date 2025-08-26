@@ -1,14 +1,22 @@
 import Google from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
-import NextAuth, { type NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
 import bcrypt from "bcrypt";
 
-export const authOptions: NextAuthOptions = {
-    adapter: MongoDBAdapter(clientPromise),
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
+    adapter: MongoDBAdapter(clientPromise, {
+        collections: {
+        Users: "users",
+        Accounts: "accounts",
+        Sessions: "sessions",
+        VerificationTokens: "verification_tokens",
+        },
+    }),
     session: {
-        strategy: "jwt", // string literal, not variable!
+        strategy: "jwt", 
         maxAge: 30 * 24 * 60 * 60,
         updateAge: 24 * 60 * 60,
     },
@@ -37,21 +45,33 @@ export const authOptions: NextAuthOptions = {
                 return {
                     id: user._id.toString(),
                     email: user.email,
-                    image: user.image || null,
-                };
+                    name: user.name ?? null,
+                    image: user.image ?? null,
+                    role: user.role ?? 'user',
+                } as any;
             },
         }),
     ],
     callbacks: {
         async jwt({ token, user }: { token: any; user: any })  {
-            if (user) token.role = (user as any).role ?? "user";
+            if (user) {
+                token.sub = (user as any).id ?? token.sub ?? null;     
+                token.name = user.name ?? token.name ?? null;
+                token.email = user.email ?? token.email ?? null;
+                (token as any).role = (user as any).role ?? "user";
+                (token as any).image = (user as any).image ?? (token as any).image ?? null;
+            }
         return token;
         },
         async session({ token, session }: { token: any; session: any }) {
-            if (session.user) session.user.role = token.role as string;
+            if (session.user) {
+                (session.user as any).id = (token.sub as string | undefined) ?? null;
+                (session.user as any).role = ((token as any).role as string) ?? "user";
+                session.user.name = session.user.name ?? (token.name as string | null);
+                session.user.email = session.user.email ?? (token.email as string | null);
+                session.user.image = session.user.image ?? ((token as any).picture as string | null);
+            }
         return session;
         },
     },
-};
-
-export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);
+});
