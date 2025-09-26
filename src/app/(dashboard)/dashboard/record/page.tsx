@@ -1,17 +1,11 @@
-import { auth } from "@/lib/auth"
-import Record from "@/components/Record"
+// app/your-route/page.tsx
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import Record from "@/components/Record";
 
+export default async function Page() {
+  const session = await auth();
+  if (!session?.user) redirect("/");
 
-
-export default async function UserAvatar() {
-  const session = await auth()
- 
-  if (!session?.user) return null
- 
-  return (
-    <>
-
-      <Record />
-    </>
-  )
+  return <Record />;
 }

@@ -1,14 +1,16 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import { AddManual } from "@/components/AddManual";
 
 export default function AddRecord() { 
     const { data: session, status } = useSession();
-    if (!session || !session.user) return <></>;
+    const router = useRouter();
     const [ url, setUrl ]= useState('');
     const [ modal, setModal] = useState(false);
     const [ error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const handleUrl = async (e:any) => {
         e.preventDefault();
         const res = await fetch('/api/sendUrl', {
@@ -25,6 +27,28 @@ export default function AddRecord() {
             window.location.reload()
         }
     }
+    
+    useEffect(() => {
+            if (status !== "authenticated") return;
+            let cancelled = false;
+    
+            (async () => {
+            try {
+                setLoading(true);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+            })();
+    
+            return () => {
+            cancelled = true;
+            };
+        }, [status]);
+    
+    if (status === "loading") return null; 
+    if (!session?.user) return router.replace('/');   
 
     return (
         <div>

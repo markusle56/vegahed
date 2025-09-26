@@ -36,7 +36,6 @@ export async function POST(request: Request) {
             return NextResponse.json(result)
         } else {
             const url_data = await scrap_data(url);
-            // throw Error(JSON.stringify(user))
             const category = await categorise(url, url_data, user.categories)
             
             const result = await addRecord(url,user.email, url_data.title, url_data.description, category, url_data.image, url_data.logo);

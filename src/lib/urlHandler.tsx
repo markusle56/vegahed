@@ -4,6 +4,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
 export async function scrap_data(url: string) {
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    url = "https://" + url;
+  }
   const html = await got(url).text();
   const $ = cheerio.load(html);
 
@@ -43,11 +46,11 @@ export async function scrap_data(url: string) {
   };
 }
 
-import OpenAI from "openai";
+// import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, 
-});
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY, 
+// });
 
 export async function categorise(
     url: string,
@@ -94,3 +97,5 @@ function getHostname(url : string) {
     return "";
   }
 }
+
+
